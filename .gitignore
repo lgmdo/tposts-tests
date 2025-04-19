@@ -21,6 +21,7 @@ media/
 # Pyright / Ruff cache
 .pyright/
 ruff_cache/
+.ruff_cache/
 
 # Poetry
 poetry.lock
