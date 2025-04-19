@@ -5,16 +5,29 @@ TEST_PATH ?= src
 MANAGE_PY := src/manage.py
 
 ifeq ($(LOCAL), true)
-	PYTHON ?= poetry run python
+	POETRY ?= poetry
 	RUNNING_MODE ?= locally
 else
-	PYTOHN ?= docker compose up exec poetry run python
+	POETRY ?= docker compose up exec poetry
 	RUNNING_MODE ?= in Docker
 endif
 
+PYTHON ?= $(POETRY) run python
+RUFF ?= $(POETRY) run ruff
+PYRIGHT ?= $(POETRY) run pyright
+
 ## Run the test suite
 test:
-	echo "Running test $(RUNNING_MODE)"
-	$(PYTHON) $(MANAGE_PY) test $(TEST_PATH); \
+	@echo "Running test $(RUNNING_MODE)"
+	@$(PYTHON) $(MANAGE_PY) test $(TEST_PATH);
+
+type-check:
+	@echo "Running type-check $(RUNNING_MODE)"
+	@$(PYRIGHT);
+
+lint:
+	@echo "Running lint $(RUNNING_MODE)"
+	@$(RUFF) check;
+
 
 
